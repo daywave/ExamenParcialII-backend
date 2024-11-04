@@ -70,6 +70,19 @@ class MySQLClientRepository extends IClientRepository {
         }
     }
 
+    async getClientByEmail(email) {
+        try {
+            const [rows] = await connection.promise().query(
+                'SELECT * FROM Clientes WHERE correo_electronico = ?',
+                [email]
+            );
+            return rows.length > 0 ? rows[0] : null;
+        } catch (error) {
+            console.error('Error al obtener cliente por correo:', error);
+            throw error;
+        }
+    }
+    
     async updateClient(client) {
         try {
             await connection.promise().query(

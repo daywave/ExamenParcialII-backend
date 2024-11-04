@@ -5,7 +5,7 @@ const database = require('./database'); // Importa la conexión a la base de dat
 const userRoutes = require('../webserver/routes/userRoutes');
 const dashboardRoutes = require('../webserver/routes/dashboardRoutes');
 const clientRoutes = require('../webserver/routes/clientRoutes');
-//const loanRoutes = require('../webserver/routes/loanRoutes');
+const loanRoutes = require('../webserver/routes/loanRoutes');
 
 // Crear instancia de Express
 const app = express();
@@ -18,7 +18,7 @@ app.use(bodyParser.json()); // Para analizar JSON en el cuerpo de las solicitude
 app.use('/api/users', userRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/clients', clientRoutes); // Cambiado para que monte directamente en /api/clients
-//app.use('/api/loans', loanRoutes);
+app.use('/api/loans', loanRoutes);
 
 // Configuración del puerto
 const PORT = process.env.PORT || 3000;
