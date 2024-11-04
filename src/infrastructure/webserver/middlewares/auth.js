@@ -1,17 +1,36 @@
+// middleware/auth.js
 const jwt = require('jsonwebtoken');
 
 module.exports = (req, res, next) => {
-    const token = req.headers['authorization'];
-
-    if (!token) {
-        return res.status(401).json({ message: 'Acceso denegado. No se proporcionó un token.' });
-    }
-
     try {
-        const decoded = jwt.verify(token, 'your_secret_key'); // Cambia 'your_secret_key' por tu clave secreta real
-        req.userId = decoded.userId; // Guarda el ID del usuario decodificado en el request
+        const authHeader = req.headers['authorization'];
+        
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+            return res.status(401).json({ 
+                success: false,
+                message: 'Acceso denegado. Token no proporcionado o formato inválido.' 
+            });
+        }
+
+        const token = authHeader.split(' ')[1];
+        
+        // Verificar y decodificar el token
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        
+        // Guardar la información decodificada en el objeto request
+        req.user = {
+            userId: decoded.userId,
+            // Puedes agregar más información del usuario si la tienes en el token
+        };
+
+        console.log('Usuario autenticado:', req.user);
         next();
     } catch (error) {
-        res.status(401).json({ message: 'Token inválido.' });
+        console.error('Error de autenticación:', error);
+        res.status(401).json({ 
+            success: false,
+            message: 'Token inválido o expirado.',
+            error: process.env.NODE_ENV === 'development' ? error.message : undefined
+        });
     }
 };

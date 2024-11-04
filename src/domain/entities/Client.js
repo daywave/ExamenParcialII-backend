@@ -1,11 +1,11 @@
 class Client {
-    constructor(id, nombre, direccion, telefono, correoElectronico, idUsuario) {
-        this.id = id;
+    constructor(id_cliente, id_usuario, nombre, direccion, telefono, correo_electronico) {
+        this.id_cliente = id_cliente;
+        this.id_usuario = id_usuario;
         this.nombre = nombre;
         this.direccion = direccion;
         this.telefono = telefono;
-        this.correoElectronico = correoElectronico;
-        this.idUsuario = idUsuario;
+        this.correo_electronico = correo_electronico;
     }
 }
 
